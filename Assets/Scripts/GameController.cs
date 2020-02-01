@@ -5,14 +5,18 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     [SerializeField]
-    List<RepairPoint> repairPoints;  
+    List<RepairPoint> repairPoints;
+
+    void Start()
+    {
+        BreakARepairPoint(0);
+    }
 
     bool BreakARepairPoint(int _index)
     {
         if(_index < repairPoints.Count)
         {
             return repairPoints[_index].BecomeDamaged();
-            
         }
         else
         {
