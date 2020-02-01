@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     private Vector3 defaultScale;
     private float bloodSplash = 0.3f;
     public float bloodForce = 0.2f;
+    [SerializeField]
+    GameData.PlayerNumber selectedPlayer;
 
     private void Awake()
     {
@@ -131,6 +133,14 @@ public class Player : MonoBehaviour
         set
         {
             currentTool = value;
+        }
+    }
+
+    public GameData.PlayerNumber PlayerNum
+    {
+        get
+        {
+            return selectedPlayer;
         }
     }
 }

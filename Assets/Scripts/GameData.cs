@@ -12,6 +12,7 @@
     }
 
     public enum PlayerNumber {
+        NULL,
         PLAYER_1,
         PLAYER_2
     }
