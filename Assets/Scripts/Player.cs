@@ -10,12 +10,13 @@ public class Player : MonoBehaviour
     public float axisDampining = 0.1f;
     private Rigidbody2D rb2D;
     public GameObject Chunks;
-    public int chunkCount = 5;
+    public int chunkCount = 2;
     [SerializeField]
-    private GameData.ToolType currentTool;
+    private GameData.ToolType currentTool = GameData.ToolType.NONE;
+
     private Vector3 defaultScale;
     private float bloodSplash = 0.3f;
-
+    public  float bloodForce = 0.2f;
     private void Awake()
     {
         this.defaultScale = this.transform.localScale;
@@ -82,14 +83,14 @@ public class Player : MonoBehaviour
     {
         //spawn chunks,
         for(int i = 0; i<chunkCount; ++i)
-        {
-            this.GetComponent<Collider2D>().enabled = false;
+        {           
             var s = Instantiate(Chunks, this.transform.position+new Vector3(Random.Range(-bloodSplash, bloodSplash),
                                                                             Random.Range(-bloodSplash, bloodSplash), 0.0f), this.transform.rotation);
             var rb2d = s.GetComponent<Rigidbody2D>();            
-            rb2d.AddForce(new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * thrust * Time.deltaTime * speedMultiplier);
+            rb2d.AddForce(new Vector2(Random.Range(-bloodForce, bloodForce), Random.Range(-bloodForce, bloodForce)) * thrust * Time.deltaTime * speedMultiplier);
             rb2d.gravityScale = this.rb2D.gravityScale;
             rb2d.drag = this.rb2D.drag;
+            rb2d.transform.parent = GameManager.ChunkManager.transform;
         }
         //remove player
 

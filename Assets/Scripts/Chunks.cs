@@ -39,6 +39,14 @@ public class Chunks : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D coll)
     {
-        Destroy(this.gameObject);
+        if(coll.gameObject.tag == "Player")
+        { 
+            //Destroy(this.gameObject);
+        }
+        if(coll.gameObject.name.Contains("Chunk"))
+        {
+            var chunkPhysicsScript = GameManager.ChunkManager.GetComponent<ChunkPhysics>();
+            chunkPhysicsScript.Chunks.Add(this.gameObject);
+        }
     }
 }
