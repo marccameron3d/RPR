@@ -16,6 +16,7 @@ public class RepairPoint : MonoBehaviour
     bool isPlayerInTrigger = false;
     [SerializeField]
     bool hasCorrectTool = false;
+    [SerializeField]
     protected GameData.ToolType neededToolType;
     protected float repairRate = 0.1f;
     protected float damageRate = 0.002f;
@@ -25,11 +26,6 @@ public class RepairPoint : MonoBehaviour
     [SerializeField]
     Image radialTimer;
 
-
-    void Start()
-    {
-        SetUp();
-    }
 
     protected virtual void SetUp()
     {

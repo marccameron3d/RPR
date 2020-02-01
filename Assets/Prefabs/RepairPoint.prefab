@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 9194100425134607308}
   - component: {fileID: 9194100425134607315}
   - component: {fileID: 9194100425134607314}
-  - component: {fileID: 9194100425134607313}
+  - component: {fileID: 5580041877935505354}
   m_Layer: 0
   m_Name: RepairPoint
   m_TagString: Untagged
@@ -282,7 +282,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 1.2}
   m_EdgeRadius: 0
---- !u!114 &9194100425134607313
+--- !u!114 &5580041877935505354
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -291,10 +291,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 9194100425134607312}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e620e04cc991d4e468473a64549dfc31, type: 3}
+  m_Script: {fileID: 11500000, guid: 1bd101849fabc492da64fbd15b7519b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerInTrigger: 0
   hasCorrectTool: 0
+  neededToolType: 1
   health: 1
   radialTimer: {fileID: 1571468038}
