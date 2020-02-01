@@ -11,10 +11,13 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb2D;
     public GameObject Chunks;
     public int chunkCount = 5;
+    [SerializeField]
+    private GameData.ToolType currentTool;
 
     void Start()
     {
         this.rb2D = GetComponent<Rigidbody2D>();
+        currentTool = GameData.ToolType.NONE;
     }
 
     // Update is called once per frame
@@ -101,5 +104,18 @@ public class Player : MonoBehaviour
     void FlipSprite(bool IsLeft = false)
     {
         this.transform.localScale = new Vector3((IsLeft ? -1 : 1), 1, 1);
+    }
+
+    public GameData.ToolType CurrentTool
+    {
+        get
+        {
+            return currentTool;
+        }
+
+        set
+        {
+            currentTool = value;
+        }
     }
 }
