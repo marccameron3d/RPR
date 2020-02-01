@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
         public float distanceToBreakAt;
     }
 
+    [SerializeField]
+    Slider progressSlider, healthSlider;
     Queue<RepairEvent> repairEvents;
 
 
@@ -55,7 +58,9 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         shipProgress = Mathf.Clamp(shipProgress + GameData.shipSpeed * Time.deltaTime, 0, shipGoalDistance);
-        Debug.Log("Ship progress" + shipProgress);
+
+        progressSlider.value = shipProgress/shipGoalDistance;
+        healthSlider.value = GameData.shipHealth;
 
         if (repairEvents.Count > 0)
         {
