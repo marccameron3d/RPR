@@ -37,9 +37,8 @@ public class CloneBay : MonoBehaviour
 
     public void Respawn()
     {
-        var player = Instantiate(GameManager.instance.Player, this.transform.position, GameManager.instance.Player.transform.rotation);
-
-
+        var p = Instantiate(GameManager.instance.Player, this.transform.position, GameManager.instance.Player.transform.rotation);
+        p.gameObject.tag = "Player1";
         EventManager.TriggerEvent(EventMessage.ResetCamera);
     }
 }
