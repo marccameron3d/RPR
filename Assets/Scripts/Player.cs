@@ -11,11 +11,12 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb2D;
     public GameObject Chunks;
     public int chunkCount = 2;
+    public bool isDead = false;
     [SerializeField]
     private GameData.ToolType currentTool = GameData.ToolType.NONE;
     private Vector3 defaultScale;
     private float bloodSplash = 0.3f;
-
+    
     [SerializeField]
     GameData.PlayerNumber selectedPlayer;
     public float chunkForce = 0.2f;
@@ -34,7 +35,18 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            EventManager.TriggerEvent(EventMessage.Death);
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            EventManager.TriggerEvent(EventMessage.GravityOn);
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            EventManager.TriggerEvent(EventMessage.GravityOff);
+        }
     }
 
     public void TakeInput(float x, float y)
@@ -59,18 +71,7 @@ public class Player : MonoBehaviour
             rb2D.velocity = rb2D.velocity.normalized * maxSpeed;
         }
         
-        if(Input.GetKeyDown(KeyCode.Z))
-        {
-            EventManager.TriggerEvent(EventMessage.Death);
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            EventManager.TriggerEvent(EventMessage.GravityOn);
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            EventManager.TriggerEvent(EventMessage.GravityOff);
-        }
+
     }
 
     void OnEnable()
@@ -83,7 +84,8 @@ public class Player : MonoBehaviour
     void OnDisable()
     {
         EventManager.StopListening(EventMessage.GravityOff, GravityOff);
-        EventManager.StartListening(EventMessage.GravityOn, GravityOn);
+        EventManager.StopListening(EventMessage.GravityOn, GravityOn);
+        EventManager.StopListening(EventMessage.Death, Die);
     }
 
     private void Explode(GameObject part)
@@ -118,8 +120,9 @@ public class Player : MonoBehaviour
                                                                             Random.Range(-bloodSplash, bloodSplash), 0.0f), this.transform.rotation);
             Explode(chunk);
         }
-        Destroy(this);
+        
         EventManager.TriggerEvent(EventMessage.GravityOn);
+        isDead = true;
     }
 
     void GravityOff() {

@@ -8,6 +8,8 @@ TagManager:
   - Player1
   - Player2
   - Player3
+  - ChunkManager
+  - CloneBay
   layers:
   - Default
   - TransparentFX
