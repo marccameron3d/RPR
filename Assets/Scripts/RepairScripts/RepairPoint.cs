@@ -49,7 +49,6 @@ public class RepairPoint : MonoBehaviour
         {
             health = Mathf.Clamp(health + repairRate, 0, 1);
 
-            Debug.Log(health);
             if (health == 1)
             {
                 BecomeNormal();
