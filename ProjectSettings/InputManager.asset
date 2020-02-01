@@ -116,7 +116,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 0
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: Vertical1
     descriptiveName: 
@@ -132,7 +132,7 @@ InputManager:
     invert: 1
     type: 2
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: Mouse ScrollWheel
     descriptiveName: 
@@ -195,8 +195,8 @@ InputManager:
     snap: 0
     invert: 0
     type: 2
-    axis: 2
-    joyNum: 2
+    axis: 0
+    joyNum: 1
   - serializedVersion: 3
     m_Name: Vertical2
     descriptiveName: 
@@ -211,8 +211,8 @@ InputManager:
     snap: 0
     invert: 1
     type: 2
-    axis: 3
-    joyNum: 2
+    axis: 1
+    joyNum: 1
   - serializedVersion: 3
     m_Name: Fire1
     descriptiveName: 
