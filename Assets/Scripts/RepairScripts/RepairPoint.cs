@@ -11,13 +11,14 @@ public class RepairPoint : MonoBehaviour
     }
 
     BoxCollider2D playerTrigger;
+    [SerializeField]
     bool isPlayerInTrigger = false;
+    [SerializeField]
     bool hasCorrectTool = false;
     protected GameData.ToolType neededToolType;
-    protected float repairRate;
-    protected float damageRate;
-    protected float damageLevel;
-    protected float health;
+    protected float repairRate = 0.1f;
+    protected float damageRate = 0.002f;
+    protected float health = 1;
     protected State currentState = State.NORMAL;
 
     void Start()
@@ -34,13 +35,24 @@ public class RepairPoint : MonoBehaviour
     {
         if (currentState != State.NORMAL)
         {
-            if (isPlayerInTrigger)
+            if (isPlayerInTrigger )
             {
                 DoingAction();
             }
 
             DealWithDamage();
-        } 
+        }
+    }
+
+    protected void Repair()
+    {
+        health = Mathf.Clamp(health + repairRate, 0, 1);
+
+        Debug.Log(health);
+        if (health == 1)
+        {
+            BecomeNormal();
+        }
     }
 
     void DealWithDamage()
@@ -53,18 +65,24 @@ public class RepairPoint : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag.Contains("Player"))
         {
+            if(other.gameObject.GetComponent<Player>().CurrentTool == neededToolType)
+            {
+                hasCorrectTool = true;
+            }
+
             isPlayerInTrigger = true;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag.Contains("Player"))
         {
+            hasCorrectTool = false;
             isPlayerInTrigger = false;
         }
     }
@@ -72,5 +90,20 @@ public class RepairPoint : MonoBehaviour
     public virtual bool DoingAction()
     {
         return false;
+    }
+
+    public void BecomeDamaged()
+    {
+        currentState = State.DAMAGED;
+    }
+
+    public bool IsDamaged()
+    {
+        return currentState != State.NORMAL;
+    }
+
+    void BecomeNormal()
+    {
+        currentState = State.NORMAL;
     }
 }

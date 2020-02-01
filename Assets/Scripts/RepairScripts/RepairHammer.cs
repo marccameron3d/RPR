@@ -1,4 +1,6 @@
-﻿public class RepairHammer : RepairPoint
+﻿using UnityEngine;
+
+public class RepairHammer : RepairPoint
 {
     protected override void SetUp()
     {
@@ -8,6 +10,10 @@
 
     public override bool DoingAction()
     {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Repair();
+        }
         return false;
     }
 }
