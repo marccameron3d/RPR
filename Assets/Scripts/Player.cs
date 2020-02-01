@@ -107,6 +107,8 @@ public class Player : MonoBehaviour
         rb2d.transform.parent = GameManager.ChunkManager.transform;
         part.GetComponent<Collider2D>().enabled = true;
 
+        EventManager.TriggerEvent(EventMessage.CameraShake);
+
     }
 
     public void Die()
@@ -130,10 +132,6 @@ public class Player : MonoBehaviour
 
     void ResetCamera()
     {
-        if(isDead)
-        {
-
-        }
     }
 
     void GravityOff() {
