@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    List<RepairPoint> repairPoints;  
 
-    // Update is called once per frame
-    void Update()
+    bool BreakARepairPoint(int _index)
     {
-        
+        if(_index < repairPoints.Count)
+        {
+            return repairPoints[_index].BecomeDamaged();
+            
+        }
+        else
+        {
+            Debug.LogError("Repair Point index out of length");
+            return false;
+        }
     }
 }

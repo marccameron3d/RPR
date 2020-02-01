@@ -92,9 +92,17 @@ public class RepairPoint : MonoBehaviour
         return false;
     }
 
-    public void BecomeDamaged()
+    public bool BecomeDamaged()
     {
-        currentState = State.DAMAGED;
+        if (currentState == State.NORMAL)
+        {
+            currentState = State.DAMAGED;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool IsDamaged()
