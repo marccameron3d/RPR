@@ -13,10 +13,10 @@ public class Player : MonoBehaviour
     public int chunkCount = 2;
     [SerializeField]
     private GameData.ToolType currentTool = GameData.ToolType.NONE;
-
     private Vector3 defaultScale;
     private float bloodSplash = 0.3f;
-    public  float bloodForce = 0.2f;
+    public float bloodForce = 0.2f;
+
     private void Awake()
     {
         this.defaultScale = this.transform.localScale;
@@ -34,6 +34,20 @@ public class Player : MonoBehaviour
         
     }
 
+    public void TakeInput(float x, float y)
+    {
+        // player controls
+        rb2D.AddForce(new Vector2(x, 0) * thrust * Time.deltaTime * speedMultiplier);
+        rb2D.AddForce(new Vector2(0, y) * thrust * Time.deltaTime * speedMultiplier);
+
+        // look direction
+        if (x > 0 + axisDampining)
+            FlipSprite();
+        else if (y < 0 - axisDampining)
+            FlipSprite(true);
+
+    }
+
     void FixedUpdate()
     {
         // set the max speed of the obj
@@ -42,16 +56,6 @@ public class Player : MonoBehaviour
             rb2D.velocity = rb2D.velocity.normalized * maxSpeed;
         }
         
-        // player controls
-        rb2D.AddForce(new Vector2(Input.GetAxis("Horizontal"), 0) * thrust * Time.deltaTime * speedMultiplier);
-        rb2D.AddForce(new Vector2(0,Input.GetAxis("Vertical")) * thrust * Time.deltaTime * speedMultiplier);
-
-        // look direction
-        if (Input.GetAxis("Horizontal") > 0 + axisDampining)
-            FlipSprite();
-        else if (Input.GetAxis("Horizontal") < 0 - axisDampining)
-            FlipSprite(true);
-
         if(Input.GetKeyDown(KeyCode.Z))
         {
             EventManager.TriggerEvent(EventMessage.Death);
@@ -79,7 +83,7 @@ public class Player : MonoBehaviour
         EventManager.StartListening(EventMessage.GravityOn, GravityOn);
     }
 
-    void Die()
+    public void Die()
     {
         //spawn chunks,
         for(int i = 0; i<chunkCount; ++i)

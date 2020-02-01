@@ -105,6 +105,7 @@ public class RepairPoint : MonoBehaviour
             radialTimer.enabled = true;
             currentState = State.DAMAGED;
             this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            EventManager.TriggerEvent(string.Format("{0}Damaged", this.gameObject.name));
             return true;
         }
         else
@@ -137,5 +138,6 @@ public class RepairPoint : MonoBehaviour
         radialTimer.enabled = false;
         currentState = State.NORMAL;
         this.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        EventManager.TriggerEvent(string.Format("{0}Repaired", this.gameObject.name));
     }
 }
