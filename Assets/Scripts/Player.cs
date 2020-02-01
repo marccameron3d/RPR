@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb2D;
     public GameObject Chunks;
     public int chunkCount = 2;
-    public bool isDead = false;
     [SerializeField]
     private GameData.ToolType currentTool = GameData.ToolType.NONE;
     private Vector3 defaultScale;
@@ -90,6 +89,8 @@ public class Player : MonoBehaviour
 
     private void Explode(GameObject part)
     {
+        part.gameObject.tag = "Untagged";
+
         var ps = part.GetComponent<ParticleSystem>();
         if (ps != null)
             ps.Play();
@@ -101,6 +102,7 @@ public class Player : MonoBehaviour
         rb2d.drag = this.rb2D.drag;
         rb2d.transform.parent = GameManager.ChunkManager.transform;
         part.GetComponent<Collider2D>().enabled = true;
+
     }
 
     public void Die()
@@ -120,9 +122,6 @@ public class Player : MonoBehaviour
                                                                             Random.Range(-bloodSplash, bloodSplash), 0.0f), this.transform.rotation);
             Explode(chunk);
         }
-        
-        EventManager.TriggerEvent(EventMessage.GravityOn);
-        isDead = true;
     }
 
     void GravityOff() {
