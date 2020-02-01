@@ -18,6 +18,7 @@ public class RepairPoint : MonoBehaviour
     protected GameData.ToolType neededToolType;
     protected float repairRate = 0.1f;
     protected float damageRate = 0.002f;
+    [SerializeField]
     protected float health = 1;
     protected State currentState = State.NORMAL;
 
@@ -35,12 +36,12 @@ public class RepairPoint : MonoBehaviour
     {
         if (currentState != State.NORMAL)
         {
-            if (isPlayerInTrigger )
+            DealWithDamage(); 
+
+            if (isPlayerInTrigger)
             {
                 DoingAction();
             }
-
-            DealWithDamage();
         }
     }
 
@@ -61,7 +62,7 @@ public class RepairPoint : MonoBehaviour
 
         if(health == 0)
         {
-            currentState = State.DESTROYED;
+            BecomeDestroyed();
         }
     }
 
@@ -92,9 +93,32 @@ public class RepairPoint : MonoBehaviour
         return false;
     }
 
-    public void BecomeDamaged()
+    public bool BecomeDamaged()
     {
-        currentState = State.DAMAGED;
+        if (currentState == State.NORMAL)
+        {
+            currentState = State.DAMAGED;
+            this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool BecomeDestroyed()
+    {
+        if (currentState != State.DESTROYED)
+        {
+            currentState = State.DESTROYED;
+            this.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool IsDamaged()
@@ -105,5 +129,6 @@ public class RepairPoint : MonoBehaviour
     void BecomeNormal()
     {
         currentState = State.NORMAL;
+        this.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
     }
 }
