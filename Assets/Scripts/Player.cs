@@ -41,7 +41,29 @@ public class Player : MonoBehaviour
             FlipSprite();
         else if (Input.GetAxis("Horizontal") < 0 - axisDampining)
             FlipSprite(true);
+    }
 
+    void OnEnable()
+    {
+        EventManager.StartListening(EventMessage.GravityOff, GravityOff);
+        EventManager.StartListening(EventMessage.GravityOn, GravityOn);
+    }
+
+    void OnDisable()
+    {
+        EventManager.StopListening(EventMessage.GravityOff, GravityOff);
+        EventManager.StartListening(EventMessage.GravityOn, GravityOn);
+    }
+
+    void GravityOff() {
+        this.rb2D.gravityScale = 0;
+        this.rb2D.drag = 0;
+    }
+
+    void GravityOn()
+    {
+        this.rb2D.gravityScale = 1;
+        this.rb2D.drag = 2;
     }
 
     void OnCollisionStay2D(Collision2D coll)
