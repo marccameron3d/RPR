@@ -6,7 +6,10 @@
     public static float destoryedModifier = 0.75f;
 
     public enum ToolType {
+        SCREWDRIVER,
         HAMMER,
+        SAW,
+        DRILL,
         WRENCH,
         NONE
     }
