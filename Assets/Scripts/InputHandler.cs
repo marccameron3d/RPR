@@ -26,7 +26,7 @@ public class InputHandler : MonoBehaviour {
                 yInput = Input.GetAxis ("Vertical2");
                 break;
         }
-        player.takeInput (xInput, yInput);
+        player.TakeInput (xInput, yInput);
     }
 
 }

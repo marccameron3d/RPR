@@ -18,7 +18,7 @@ public class Suffocation : MonoBehaviour {
     private void Update () {
         suffocationTimer = Mathf.Clamp ((inSpace ? Time.deltaTime : -Time.deltaTime) + suffocationTimer, 0, suffocationLimit);
         if (suffocationTimer >= suffocationLimit) {
-            player.Die ();
+            player.Die();
         }
         Debug.Log (suffocationTimer);
     }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
     // Start is called before the first frame update
 
     public float thrust = 10.0f;
@@ -9,99 +10,126 @@ public class Player : MonoBehaviour {
     public float axisDampining = 0.1f;
     private Rigidbody2D rb2D;
     public GameObject Chunks;
-    public int chunkCount = 5;
+    public int chunkCount = 2;
     [SerializeField]
     private GameData.ToolType currentTool = GameData.ToolType.NONE;
+    private Vector3 defaultScale;
+    private float bloodSplash = 0.3f;
+    public float bloodForce = 0.2f;
 
-    void Start () {
-        this.rb2D = GetComponent<Rigidbody2D> ();
+    private void Awake()
+    {
+        this.defaultScale = this.transform.localScale;
+    }
+    void Start()
+    {
+        this.rb2D = GetComponent<Rigidbody2D>();
         currentTool = GameData.ToolType.NONE;
+
     }
 
     // Update is called once per frame
-    void Update () {
-
+    void Update()
+    {
+        
     }
 
-    void FixedUpdate () {
-        // set the max speed of the obj
-        if (rb2D.velocity.magnitude > maxSpeed) {
-            rb2D.velocity = rb2D.velocity.normalized * maxSpeed;
-        }
-
-        if (Input.GetKeyDown (KeyCode.Z)) {
-            EventManager.TriggerEvent (EventMessage.Death);
-        }
-        if (Input.GetKeyDown (KeyCode.X)) {
-            EventManager.TriggerEvent (EventMessage.GravityOn);
-        }
-        if (Input.GetKeyDown (KeyCode.C)) {
-            EventManager.TriggerEvent (EventMessage.GravityOff);
-        }
-    }
-
-    public void takeInput (float x, float y) {
+    public void TakeInput(float x, float y)
+    {
         // player controls
-        rb2D.AddForce (new Vector2 (x, 0) * thrust * Time.deltaTime * speedMultiplier);
-        rb2D.AddForce (new Vector2 (0, y) * thrust * Time.deltaTime * speedMultiplier);
+        rb2D.AddForce(new Vector2(x, 0) * thrust * Time.deltaTime * speedMultiplier);
+        rb2D.AddForce(new Vector2(0, y) * thrust * Time.deltaTime * speedMultiplier);
 
         // look direction
         if (x > 0 + axisDampining)
-            FlipSprite ();
+            FlipSprite();
         else if (y < 0 - axisDampining)
-            FlipSprite (true);
+            FlipSprite(true);
 
     }
 
-    void OnEnable () {
-        EventManager.StartListening (EventMessage.GravityOff, GravityOff);
-        EventManager.StartListening (EventMessage.GravityOn, GravityOn);
-        EventManager.StartListening (EventMessage.Death, Die);
+    void FixedUpdate()
+    {
+        // set the max speed of the obj
+        if (rb2D.velocity.magnitude > maxSpeed)
+        {
+            rb2D.velocity = rb2D.velocity.normalized * maxSpeed;
+        }
+        
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            EventManager.TriggerEvent(EventMessage.Death);
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            EventManager.TriggerEvent(EventMessage.GravityOn);
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            EventManager.TriggerEvent(EventMessage.GravityOff);
+        }
+    }
+
+    void OnEnable()
+    {
+        EventManager.StartListening(EventMessage.GravityOff, GravityOff);
+        EventManager.StartListening(EventMessage.GravityOn, GravityOn);
+        EventManager.StartListening(EventMessage.Death, Die);
     }
 
     void OnDisable()
     {
         EventManager.StopListening(EventMessage.GravityOff, GravityOff);
-        EventManager.StopListening(EventMessage.GravityOn, GravityOn);
-
+        EventManager.StartListening(EventMessage.GravityOn, GravityOn);
     }
 
-    public void Die () {
+    public void Die()
+    {
         //spawn chunks,
-        for (int i = 0; i < chunkCount; ++i) {
-            var s = Instantiate (Chunks, this.transform.position, this.transform.rotation);
-            var rb2d = s.GetComponent<Rigidbody2D> ();
-            rb2d.AddForce (new Vector2 (Random.Range (-1, 1), Random.Range (-1, 1)) * thrust * Time.deltaTime * speedMultiplier);
+        for(int i = 0; i<chunkCount; ++i)
+        {           
+            var s = Instantiate(Chunks, this.transform.position+new Vector3(Random.Range(-bloodSplash, bloodSplash),
+                                                                            Random.Range(-bloodSplash, bloodSplash), 0.0f), this.transform.rotation);
+            var rb2d = s.GetComponent<Rigidbody2D>();            
+            rb2d.AddForce(new Vector2(Random.Range(-bloodForce, bloodForce), Random.Range(-bloodForce, bloodForce)) * thrust * Time.deltaTime * speedMultiplier);
             rb2d.gravityScale = this.rb2D.gravityScale;
             rb2d.drag = this.rb2D.drag;
+            rb2d.transform.parent = GameManager.ChunkManager.transform;
         }
         //remove player
+
     }
 
-    void GravityOff () {
+    void GravityOff() {
         this.rb2D.gravityScale = 0;
         this.rb2D.drag = 0;
     }
 
-    void GravityOn () {
+    void GravityOn()
+    {
         this.rb2D.gravityScale = 1;
         this.rb2D.drag = 2;
     }
 
-    void OnCollisionStay2D (Collision2D coll) {
+    void OnCollisionStay2D(Collision2D coll)
+    {
 
     }
 
-    void FlipSprite (bool IsLeft = false) {
-        this.transform.localScale = new Vector3 ((IsLeft ? -1 : 1), 1, 1);
+    void FlipSprite(bool IsLeft = false)
+    {
+        this.transform.localScale = new Vector3((IsLeft ? -this.defaultScale.x : this.defaultScale.x), this.defaultScale.y, this.defaultScale.z);
     }
 
-    public GameData.ToolType CurrentTool {
-        get {
+    public GameData.ToolType CurrentTool
+    {
+        get
+        {
             return currentTool;
         }
 
-        set {
+        set
+        {
             currentTool = value;
         }
     }
