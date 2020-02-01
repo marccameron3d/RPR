@@ -15,60 +15,54 @@ public class PlayerCameraController : MonoBehaviour {
 
     Vector3 originalPos;
 
-    private void Awake () {
+    private void Awake() {
         AssignPlayer(assignedPlayer);
     }
 
-    private void Update () {
+    private void Update() {
 
-        if (shakeDuration > 0)
-        {
+        if (shakeDuration > 0) {
             transform.localPosition = new Vector3(player.transform.position.x, player.transform.position.y, -10) + Random.insideUnitSphere * shakeAmount;
 
             shakeDuration -= Time.deltaTime * decreaseFactor;
-        }
-        else
-        {
+        } else {
             shakeDuration = 0f;
-            transform.localPosition = new Vector3(player.transform.position.x, player.transform.position.y, -10); 
+            transform.localPosition = new Vector3(player.transform.position.x, player.transform.position.y, -10);
         }
     }
 
-    void OnEnable()
-    {
+    void OnEnable() {
         EventManager.StartListening(EventMessage.ResetCamera, ResetCamera);
         EventManager.StartListening(EventMessage.CameraShake, CameraShake);
 
     }
 
-    void OnDisable()
-    {
+    void OnDisable() {
         EventManager.StopListening(EventMessage.ResetCamera, ResetCamera);
         EventManager.StopListening(EventMessage.CameraShake, CameraShake);
 
     }
 
-    private void CameraShake()
-    {
+    private void CameraShake() {
         Debug.Log("Camera Shake");
-        shakeDuration = shakeTime;   
+        shakeDuration = shakeTime;
     }
 
-    private void ResetCamera()
-    {
+    private void ResetCamera() {
         Debug.Log("Reset Camera");
         AssignPlayer(assignedPlayer);
     }
 
-    private void AssignPlayer(GameData.PlayerNumber assignedPlayer)
-    {
-        switch (assignedPlayer)
-        {
+    private void AssignPlayer(GameData.PlayerNumber assignedPlayer) {
+        switch (assignedPlayer) {
             case GameData.PlayerNumber.PLAYER_1:
                 player = GameObject.FindGameObjectWithTag("Player1").transform;
                 break;
             case GameData.PlayerNumber.PLAYER_2:
                 player = GameObject.FindGameObjectWithTag("Player2").transform;
+                break;
+            case GameData.PlayerNumber.PLAYER_3:
+                player = GameObject.FindGameObjectWithTag("Player3").transform;
                 break;
         }
     }
