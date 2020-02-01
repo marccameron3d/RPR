@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     public float maxSpeed = 4f;
     public float axisDampining = 0.1f;
     private Rigidbody2D rb2D;
+    public GameObject Chunks;
+    public int chunkCount = 5;
     [SerializeField]
     private GameData.ToolType currentTool;
 
@@ -41,18 +43,46 @@ public class Player : MonoBehaviour
             FlipSprite();
         else if (Input.GetAxis("Horizontal") < 0 - axisDampining)
             FlipSprite(true);
+
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            EventManager.TriggerEvent(EventMessage.Death);
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            EventManager.TriggerEvent(EventMessage.GravityOn);
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            EventManager.TriggerEvent(EventMessage.GravityOff);
+        }
     }
 
     void OnEnable()
     {
         EventManager.StartListening(EventMessage.GravityOff, GravityOff);
         EventManager.StartListening(EventMessage.GravityOn, GravityOn);
+        EventManager.StartListening(EventMessage.Death, Die);
     }
 
     void OnDisable()
     {
         EventManager.StopListening(EventMessage.GravityOff, GravityOff);
         EventManager.StartListening(EventMessage.GravityOn, GravityOn);
+    }
+
+    void Die()
+    {
+        //spawn chunks,
+        for(int i = 0; i<chunkCount; ++i)
+        {
+            var s = Instantiate(Chunks, this.transform.position, this.transform.rotation);
+            var rb2d = s.GetComponent<Rigidbody2D>();
+            rb2d.AddForce(new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)) * thrust * Time.deltaTime * speedMultiplier);
+            rb2d.gravityScale = this.rb2D.gravityScale;
+            rb2d.drag = this.rb2D.drag;
+        }
+        //remove player
     }
 
     void GravityOff() {

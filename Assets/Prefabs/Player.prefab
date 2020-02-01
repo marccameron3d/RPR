@@ -183,6 +183,8 @@ MonoBehaviour:
   speedMultiplier: 100
   maxSpeed: 3
   axisDampining: 0.1
+  Chunks: {fileID: 1307498791989046259, guid: d7b1349a7ed72bb4c850666d82e444b1, type: 3}
+  chunkCount: 5
 --- !u!50 &774851566997623537
 Rigidbody2D:
   serializedVersion: 4
