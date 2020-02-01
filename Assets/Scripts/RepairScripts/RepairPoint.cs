@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class RepairPoint : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class RepairPoint : MonoBehaviour
     [SerializeField]
     protected float health = 1;
     protected State currentState = State.NORMAL;
+    [SerializeField]
+    Image radialTimer;
 
     void Start()
     {
@@ -36,7 +39,9 @@ public class RepairPoint : MonoBehaviour
     {
         if (currentState != State.NORMAL)
         {
-            DealWithDamage(); 
+            DealWithDamage();
+
+            radialTimer.fillAmount = health;
 
             if (isPlayerInTrigger)
             {
@@ -97,6 +102,7 @@ public class RepairPoint : MonoBehaviour
     {
         if (currentState == State.NORMAL)
         {
+            radialTimer.enabled = true;
             currentState = State.DAMAGED;
             this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
             return true;
@@ -128,6 +134,7 @@ public class RepairPoint : MonoBehaviour
 
     void BecomeNormal()
     {
+        radialTimer.enabled = false;
         currentState = State.NORMAL;
         this.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
     }
