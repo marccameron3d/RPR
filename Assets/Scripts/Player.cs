@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     public GameObject Chunks;
     public int chunkCount = 5;
     [SerializeField]
-    private GameData.ToolType currentTool;
+    private GameData.ToolType currentTool = GameData.ToolType.NONE;
 
     void Start()
     {

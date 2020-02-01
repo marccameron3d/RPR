@@ -43,7 +43,7 @@ public class RepairPoint : MonoBehaviour
 
             radialTimer.fillAmount = health;
 
-            if (isPlayerInTrigger)
+            if (isPlayerInTrigger && hasCorrectTool)
             {
                 DoingAction();
             }
