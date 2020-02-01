@@ -5,5 +5,6 @@
     public static string Death = "DEATH";
     public static string Respawn = "RESPAWN";
     public static string ResetCamera = "RESET_CAMERA";
+    public static string CameraShake = "CAMERA_SHAKE";
 
 }
