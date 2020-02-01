@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour {
     // Start is called before the first frame update
 
     public float thrust = 10.0f;
@@ -15,164 +14,161 @@ public class Player : MonoBehaviour
     private GameData.ToolType currentTool = GameData.ToolType.NONE;
     private Vector3 defaultScale;
     private float bloodSplash = 0.3f;
-    
+    private bool byCloneBay = false;
+
     [SerializeField]
     GameData.PlayerNumber selectedPlayer;
     public float chunkForce = 0.2f;
 
-    private void Awake()
-    {
+    private void Awake () {
         this.defaultScale = this.transform.localScale;
     }
-    void Start()
-    {
-        this.rb2D = GetComponent<Rigidbody2D>();
+    void Start () {
+        this.rb2D = GetComponent<Rigidbody2D> ();
         currentTool = GameData.ToolType.NONE;
 
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            EventManager.TriggerEvent(EventMessage.Death);
+    void Update () {
+        if (Input.GetKeyDown (KeyCode.Z)) {
+            EventManager.TriggerEvent (EventMessage.Death);
         }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            EventManager.TriggerEvent(EventMessage.GravityOn);
+        if (Input.GetKeyDown (KeyCode.X)) {
+            EventManager.TriggerEvent (EventMessage.GravityOn);
         }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            EventManager.TriggerEvent(EventMessage.GravityOff);
+        if (Input.GetKeyDown (KeyCode.C)) {
+            EventManager.TriggerEvent (EventMessage.GravityOff);
         }
     }
 
-    public void TakeInput(float x, float y)
-    {
+    public void TakeInput (float x, float y) {
         // player controls
-        rb2D.AddForce(new Vector2(x, 0) * thrust * Time.deltaTime * speedMultiplier);
-        rb2D.AddForce(new Vector2(0, y) * thrust * Time.deltaTime * speedMultiplier);
+        rb2D.AddForce (new Vector2 (x, 0) * thrust * Time.deltaTime * speedMultiplier);
+        rb2D.AddForce (new Vector2 (0, y) * thrust * Time.deltaTime * speedMultiplier);
 
         // look direction
         if (x > 0 + axisDampining)
-            FlipSprite();
+            FlipSprite ();
         else if (y < 0 - axisDampining)
-            FlipSprite(true);
+            FlipSprite (true);
     }
 
-    void FixedUpdate()
-    {
+    void FixedUpdate () {
         // set the max speed of the obj
-        if (rb2D.velocity.magnitude > maxSpeed)
-        {
+        if (rb2D.velocity.magnitude > maxSpeed) {
             rb2D.velocity = rb2D.velocity.normalized * maxSpeed;
         }
-        
 
     }
 
-    void OnEnable()
-    {
-        EventManager.StartListening(EventMessage.GravityOff, GravityOff);
-        EventManager.StartListening(EventMessage.GravityOn, GravityOn);
-        EventManager.StartListening(EventMessage.Death, Die);
-        EventManager.StartListening(EventMessage.ResetCamera, ResetCamera);
+    void OnEnable () {
+        EventManager.StartListening (EventMessage.GravityOff, GravityOff);
+        EventManager.StartListening (EventMessage.GravityOn, GravityOn);
+        EventManager.StartListening (EventMessage.Death, Die);
+        EventManager.StartListening (EventMessage.ResetCamera, ResetCamera);
 
     }
 
-    void OnDisable()
-    {
-        EventManager.StopListening(EventMessage.GravityOff, GravityOff);
-        EventManager.StopListening(EventMessage.GravityOn, GravityOn);
-        EventManager.StopListening(EventMessage.Death, Die);
-        EventManager.StopListening(EventMessage.ResetCamera, ResetCamera);
+    void OnDisable () {
+        EventManager.StopListening (EventMessage.GravityOff, GravityOff);
+        EventManager.StopListening (EventMessage.GravityOn, GravityOn);
+        EventManager.StopListening (EventMessage.Death, Die);
+        EventManager.StopListening (EventMessage.ResetCamera, ResetCamera);
 
     }
 
-    private void Explode(GameObject part)
-    {
+    private void Explode (GameObject part) {
         part.gameObject.tag = "Untagged";
 
-        var ps = part.GetComponent<ParticleSystem>();
+        var ps = part.GetComponent<ParticleSystem> ();
         if (ps != null)
-            ps.Play();
+            ps.Play ();
 
-        var rb2d = part.GetComponent<Rigidbody2D>();
+        var rb2d = part.GetComponent<Rigidbody2D> ();
         rb2d.simulated = true;
-        rb2d.AddForce(new Vector2(Random.Range(-chunkForce, chunkForce), Random.Range(-chunkForce, chunkForce)) * thrust * Time.deltaTime * speedMultiplier);
+        rb2d.AddForce (new Vector2 (Random.Range (-chunkForce, chunkForce), Random.Range (-chunkForce, chunkForce)) * thrust * Time.deltaTime * speedMultiplier);
         rb2d.gravityScale = this.rb2D.gravityScale;
         rb2d.drag = this.rb2D.drag;
         rb2d.transform.parent = GameManager.ChunkManager.transform;
-        part.GetComponent<Collider2D>().enabled = true;
+        part.GetComponent<Collider2D> ().enabled = true;
 
     }
 
-    public void Die()
-    {
+    public void Die () {
         //remove player collision
-        this.GetComponent<Collider2D>().enabled = false;
+        this.GetComponent<Collider2D> ().enabled = false;
         //explode player
-        var count = transform.GetChildCount();
-        for (int i=0; i<count; ++i)
-        {
-            Explode(transform.GetChild(0).gameObject);
+        var count = transform.GetChildCount ();
+        for (int i = 0; i < count; ++i) {
+            Explode (transform.GetChild (0).gameObject);
         }
         //spawn chunks,
-        for (int i = 0; i<chunkCount; ++i)
-        {           
-            var chunk = Instantiate(Chunks, this.transform.position+new Vector3(Random.Range(-bloodSplash, bloodSplash),
-                                                                            Random.Range(-bloodSplash, bloodSplash), 0.0f), this.transform.rotation);
-            Explode(chunk);
+        for (int i = 0; i < chunkCount; ++i) {
+            var chunk = Instantiate (Chunks, this.transform.position + new Vector3 (Random.Range (-bloodSplash, bloodSplash),
+                Random.Range (-bloodSplash, bloodSplash), 0.0f), this.transform.rotation);
+            Explode (chunk);
+        }
+
+        switch (PlayerNum) {
+            case GameData.PlayerNumber.PLAYER_1:
+                GameData.player1Dead = true;
+                break;
+            case GameData.PlayerNumber.PLAYER_2:
+                GameData.player2Dead = true;
+                break;
+            case GameData.PlayerNumber.PLAYER_3:
+                GameData.player3Dead = true;
+                break;
         }
     }
 
-    void ResetCamera()
-    {
-        if(isDead)
-        {
+    void ResetCamera () {
 
-        }
     }
 
-    void GravityOff() {
+    void GravityOff () {
         this.rb2D.gravityScale = 0;
         this.rb2D.drag = 0;
     }
 
-    void GravityOn()
-    {
+    void GravityOn () {
         this.rb2D.gravityScale = 1;
         this.rb2D.drag = 2;
     }
 
-    void OnCollisionStay2D(Collision2D coll)
-    {
-
+    private void OnTriggerEnter2D (Collider2D other) {
+        if (other.gameObject.tag == "CloneBay") {
+            byCloneBay = true;
+        }
     }
 
-    void FlipSprite(bool IsLeft = false)
-    {
-        this.transform.localScale = new Vector3((IsLeft ? -this.defaultScale.x : this.defaultScale.x), this.defaultScale.y, this.defaultScale.z);
+    private void OnTriggerExit2D (Collider2D other) {
+        if (other.gameObject.tag == "CloneBay") {
+            byCloneBay = false;
+        }
     }
 
-    public GameData.ToolType CurrentTool
-    {
-        get
-        {
+    public bool isByCloneBay () {
+        return byCloneBay;
+    }
+
+    void FlipSprite (bool IsLeft = false) {
+        this.transform.localScale = new Vector3 ((IsLeft ? -this.defaultScale.x : this.defaultScale.x), this.defaultScale.y, this.defaultScale.z);
+    }
+
+    public GameData.ToolType CurrentTool {
+        get {
             return currentTool;
         }
 
-        set
-        {
+        set {
             currentTool = value;
         }
     }
 
-    public GameData.PlayerNumber PlayerNum
-    {
-        get
-        {
+    public GameData.PlayerNumber PlayerNum {
+        get {
             return selectedPlayer;
         }
     }

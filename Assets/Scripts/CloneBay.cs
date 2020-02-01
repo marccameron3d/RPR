@@ -4,29 +4,39 @@ using UnityEngine;
 
 public class CloneBay : MonoBehaviour
 {
+
+    private bool respawnActive = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Respawn Player");
-            Respawn();
+    void respawnPlayers() { 
+        if(GameData.player1Dead){ 
+
         }
+        if(GameData.player2Dead){ 
+            
+        }
+        if(GameData.player3Dead){ 
+            
+        }
+    }
+
+    void onPlayerDeath() { 
+        respawnActive = true;
     }
 
     void OnEnable()
     {
+        EventManager.StartListening(EventMessage.Death, onPlayerDeath);
         EventManager.StartListening(EventMessage.Respawn, Respawn);
     }
 
     void OnDisable()
     {
+        EventManager.StopListening(EventMessage.Death, onPlayerDeath);
         EventManager.StopListening(EventMessage.Respawn, Respawn);
     }
 

@@ -4,6 +4,9 @@
     public static bool gravityIsWorking = true;
     public static float repairPointValue = 0.1f;
     public static float destoryedModifier = 0.75f;
+    public static bool player1Dead = false;
+    public static bool player2Dead = false;
+    public static bool player3Dead = false;
 
     public enum ToolType {
         SCREWDRIVER,
