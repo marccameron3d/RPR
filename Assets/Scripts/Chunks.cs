@@ -39,9 +39,11 @@ public class Chunks : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D coll)
     {
-        if(coll.gameObject.tag == "Player")
+        if(coll.gameObject.tag.Contains("Player"))
         { 
-            //Destroy(this.gameObject);
+            Destroy(this.gameObject);
+            Debug.Log("BLOODED");
+
         }
         if(coll.gameObject.name.Contains("Chunk"))
         {
