@@ -11,8 +11,11 @@ public class GameController : MonoBehaviour
     {
         for(int i = 0; i <repairPoints.Count; i++)
         {
-            EventManager.StartListening(string.Format("{0}Repaired", repairPoints[i].name), PointRepaired);
-            EventManager.StartListening(string.Format("{0}Damaged", repairPoints[i].name), PointDamaged);
+            if (repairPoints[i] != null)
+            {
+                EventManager.StartListening(string.Format("{0}Repaired", repairPoints[i].name), PointRepaired);
+                EventManager.StartListening(string.Format("{0}Damaged", repairPoints[i].name), PointDamaged);
+            }
         }
         BreakRandomPoint();
     }
@@ -21,8 +24,11 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < repairPoints.Count; i++)
         {
-            EventManager.StopListening(string.Format("{0}Repaired", repairPoints[i].name), PointRepaired);
-            EventManager.StopListening(string.Format("{0}Damaged", repairPoints[i].name), PointDamaged);
+            if (repairPoints[i] != null)
+            {
+                EventManager.StopListening(string.Format("{0}Repaired", repairPoints[i].name), PointRepaired);
+                EventManager.StopListening(string.Format("{0}Damaged", repairPoints[i].name), PointDamaged);
+            }
         }
     }
 

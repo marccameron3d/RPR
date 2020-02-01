@@ -59,9 +59,11 @@ public class Player : MonoBehaviour {
         EventManager.StartListening (EventMessage.Death, Die);
     }
 
-    void OnDisable () {
-        EventManager.StopListening (EventMessage.GravityOff, GravityOff);
-        EventManager.StartListening (EventMessage.GravityOn, GravityOn);
+    void OnDisable()
+    {
+        EventManager.StopListening(EventMessage.GravityOff, GravityOff);
+        EventManager.StopListening(EventMessage.GravityOn, GravityOn);
+
     }
 
     public void Die () {
