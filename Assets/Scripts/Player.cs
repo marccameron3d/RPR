@@ -85,6 +85,10 @@ public class Player : MonoBehaviour
 
     private void Explode(GameObject part)
     {
+        var ps = part.GetComponent<ParticleSystem>();
+        if (ps != null)
+            ps.Play();
+
         var rb2d = part.GetComponent<Rigidbody2D>();
         rb2d.simulated = true;
         rb2d.AddForce(new Vector2(Random.Range(-chunkForce, chunkForce), Random.Range(-chunkForce, chunkForce)) * thrust * Time.deltaTime * speedMultiplier);
@@ -112,6 +116,7 @@ public class Player : MonoBehaviour
             Explode(chunk);
         }
         Destroy(this);
+        EventManager.TriggerEvent(EventMessage.GravityOn);
     }
 
     void GravityOff() {
