@@ -15,9 +15,10 @@ public class Player : MonoBehaviour
     private GameData.ToolType currentTool = GameData.ToolType.NONE;
     private Vector3 defaultScale;
     private float bloodSplash = 0.3f;
-    public float bloodForce = 0.2f;
+
     [SerializeField]
     GameData.PlayerNumber selectedPlayer;
+    public float chunkForce = 0.2f;
 
     private void Awake()
     {
@@ -85,21 +86,40 @@ public class Player : MonoBehaviour
         EventManager.StartListening(EventMessage.GravityOn, GravityOn);
     }
 
+    private void Explode(GameObject part)
+    {
+        var ps = part.GetComponent<ParticleSystem>();
+        if (ps != null)
+            ps.Play();
+
+        var rb2d = part.GetComponent<Rigidbody2D>();
+        rb2d.simulated = true;
+        rb2d.AddForce(new Vector2(Random.Range(-chunkForce, chunkForce), Random.Range(-chunkForce, chunkForce)) * thrust * Time.deltaTime * speedMultiplier);
+        rb2d.gravityScale = this.rb2D.gravityScale;
+        rb2d.drag = this.rb2D.drag;
+        rb2d.transform.parent = GameManager.ChunkManager.transform;
+        part.GetComponent<Collider2D>().enabled = true;
+    }
+
     public void Die()
     {
-        //spawn chunks,
-        for(int i = 0; i<chunkCount; ++i)
-        {           
-            var s = Instantiate(Chunks, this.transform.position+new Vector3(Random.Range(-bloodSplash, bloodSplash),
-                                                                            Random.Range(-bloodSplash, bloodSplash), 0.0f), this.transform.rotation);
-            var rb2d = s.GetComponent<Rigidbody2D>();            
-            rb2d.AddForce(new Vector2(Random.Range(-bloodForce, bloodForce), Random.Range(-bloodForce, bloodForce)) * thrust * Time.deltaTime * speedMultiplier);
-            rb2d.gravityScale = this.rb2D.gravityScale;
-            rb2d.drag = this.rb2D.drag;
-            rb2d.transform.parent = GameManager.ChunkManager.transform;
+        //remove player collision
+        this.GetComponent<Collider2D>().enabled = false;
+        //explode player
+        var count = transform.GetChildCount();
+        for (int i=0; i<count; ++i)
+        {
+            Explode(transform.GetChild(0).gameObject);
         }
-        //remove player
-
+        //spawn chunks,
+        for (int i = 0; i<chunkCount; ++i)
+        {           
+            var chunk = Instantiate(Chunks, this.transform.position+new Vector3(Random.Range(-bloodSplash, bloodSplash),
+                                                                            Random.Range(-bloodSplash, bloodSplash), 0.0f), this.transform.rotation);
+            Explode(chunk);
+        }
+        Destroy(this);
+        EventManager.TriggerEvent(EventMessage.GravityOn);
     }
 
     void GravityOff() {

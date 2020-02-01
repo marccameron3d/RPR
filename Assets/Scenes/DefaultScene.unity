@@ -121,6 +121,25 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &359030441 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 774851566997623550, guid: 68590db1dfffd384e930c8b5681bfcca,
+    type: 3}
+  m_PrefabInstance: {fileID: 1283815655}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &359030442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359030441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01518ac0a301c44d1b1d3d4fde5bdbfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedPlayer: 0
 --- !u!1001 &899895243
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -216,21 +235,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 774851566997623536, guid: 68590db1dfffd384e930c8b5681bfcca,
-        type: 3}
-      propertyPath: chunkCount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 774851566997623536, guid: 68590db1dfffd384e930c8b5681bfcca,
-        type: 3}
-      propertyPath: bloodForce
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 774851566997623537, guid: 68590db1dfffd384e930c8b5681bfcca,
-        type: 3}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 774851566997623541, guid: 68590db1dfffd384e930c8b5681bfcca,
         type: 3}
       propertyPath: m_LocalPosition.x
