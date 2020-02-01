@@ -60,7 +60,6 @@ public class Player : MonoBehaviour
             FlipSprite();
         else if (y < 0 - axisDampining)
             FlipSprite(true);
-
     }
 
     void FixedUpdate()
