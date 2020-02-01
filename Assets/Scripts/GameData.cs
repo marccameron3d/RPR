@@ -7,6 +7,8 @@
     public static bool player1Alive = true;
     public static bool player2Alive = true;
     public static bool player3Alive = true;
+    public static float shipSpeed = 1.0f;
+    public static float shipSpeedModifier = 1.0f;
 
     public enum ToolType {
         SCREWDRIVER,

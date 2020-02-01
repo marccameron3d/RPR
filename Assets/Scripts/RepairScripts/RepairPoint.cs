@@ -16,6 +16,7 @@ public class RepairPoint : MonoBehaviour
     bool isPlayerInTrigger = false;
     [SerializeField]
     bool hasCorrectTool = false;
+    [SerializeField]
     protected GameData.ToolType neededToolType;
     protected float repairRate = 0.1f;
     protected float damageRate = 0.002f;
@@ -24,12 +25,9 @@ public class RepairPoint : MonoBehaviour
     protected State currentState = State.NORMAL;
     [SerializeField]
     Image radialTimer;
+    [SerializeField]
+    Image outLine;
 
-
-    void Start()
-    {
-        SetUp();
-    }
 
     protected virtual void SetUp()
     {
@@ -95,6 +93,7 @@ public class RepairPoint : MonoBehaviour
         if (currentState == State.NORMAL)
         {
             radialTimer.enabled = true;
+            outLine.enabled = true;
             currentState = State.DAMAGED;
             this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
             EventManager.TriggerEvent(string.Format("{0}Damaged", this.gameObject.name));
@@ -128,6 +127,7 @@ public class RepairPoint : MonoBehaviour
     void BecomeNormal()
     {
         radialTimer.enabled = false;
+        outLine.enabled = false;
         currentState = State.NORMAL;
         this.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
         EventManager.TriggerEvent(string.Format("{0}Repaired", this.gameObject.name));

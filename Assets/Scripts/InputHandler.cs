@@ -5,8 +5,12 @@ using XboxCtrlrInput;
 
 public class InputHandler : MonoBehaviour {
 
-    enum GenstureType {
-        HAMMER,
+    float drillPos = 0.0f;
+    bool completeGesture = false;
+
+    enum GenstureType
+    {
+        HAMMER, 
         CIRCLE,
         TRIGGER_PULL
     }
@@ -32,6 +36,34 @@ public class InputHandler : MonoBehaviour {
         }
     }
 
+    void CalculateGesture()
+    {
+        switch (player.CurrentTool)
+        {
+            case GameData.ToolType.HAMMER:; break;
+               
+            case GameData.ToolType.DRILL:; break;
+
+            case GameData.ToolType.SAW:; break;
+
+            case GameData.ToolType.SCREWDRIVER:; break;
+
+            case GameData.ToolType.WRENCH:; break;
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            completeGesture = true;
+        }
+
+        if (completeGesture)
+        {
+            EventManager.TriggerEvent(string.Format("Player{0}{1}", (int)player.PlayerNum, player.CurrentTool));
+            completeGesture = false;
+        }
+    
+    }
+            
     private void Update () {
         if (player.PlayerNum != GameData.PlayerNumber.NULL) {
             if (Input.GetButtonDown (string.Format ("ButtonA{0}", (int) player.PlayerNum))) {
@@ -48,11 +80,5 @@ public class InputHandler : MonoBehaviour {
 
     }
 
-    void CalculateGesture () {
-        //if(Input.GetButtonUp(string.Format("Horizontal{0}", (int)player.PlayerNum)))
-        if (Input.GetKeyDown (KeyCode.Space)) {
-            EventManager.TriggerEvent (string.Format ("Player{0}{1}", (int) player.PlayerNum, GameData.ToolType.HAMMER));
-        }
-    }
-
+   
 }
