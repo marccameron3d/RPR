@@ -25,6 +25,7 @@ public class RepairPoint : MonoBehaviour
     [SerializeField]
     Image radialTimer;
 
+
     void Start()
     {
         SetUp();
@@ -40,24 +41,21 @@ public class RepairPoint : MonoBehaviour
         if (currentState != State.NORMAL)
         {
             DealWithDamage();
-
             radialTimer.fillAmount = health;
-
-            if (isPlayerInTrigger && hasCorrectTool)
-            {
-                DoingAction();
-            }
         }
     }
 
     protected void Repair()
     {
-        health = Mathf.Clamp(health + repairRate, 0, 1);
-
-        Debug.Log(health);
-        if (health == 1)
+        if (currentState != State.NORMAL)
         {
-            BecomeNormal();
+            health = Mathf.Clamp(health + repairRate, 0, 1);
+
+            Debug.Log(health);
+            if (health == 1)
+            {
+                BecomeNormal();
+            }
         }
     }
 
@@ -77,10 +75,9 @@ public class RepairPoint : MonoBehaviour
         {
             if(other.gameObject.GetComponent<Player>().CurrentTool == neededToolType)
             {
-                hasCorrectTool = true;
+                Debug.Log("StartListening");
+                EventManager.StartListening(string.Format("Player{0}{1}", (int)other.gameObject.GetComponent<Player>().PlayerNum, neededToolType),Repair);
             }
-
-            isPlayerInTrigger = true;
         }
     }
 
@@ -88,14 +85,9 @@ public class RepairPoint : MonoBehaviour
     {
         if (other.gameObject.tag.Contains("Player"))
         {
-            hasCorrectTool = false;
-            isPlayerInTrigger = false;
+            Debug.Log("StopListening");
+            EventManager.StopListening(string.Format("Player{0}{1}", (int)other.gameObject.GetComponent<Player>().PlayerNum, neededToolType), Repair);
         }
-    }
-
-    public virtual bool DoingAction()
-    {
-        return false;
     }
 
     public bool BecomeDamaged()

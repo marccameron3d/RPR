@@ -20,7 +20,7 @@ public class Suffocation : MonoBehaviour {
         if (suffocationTimer >= suffocationLimit) {
             player.Die();
         }
-        Debug.Log (suffocationTimer);
+//        Debug.Log (suffocationTimer);
     }
 
     void OnTriggerEnter2D (Collider2D other) {
