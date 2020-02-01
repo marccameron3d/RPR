@@ -13,11 +13,18 @@ public class Player : MonoBehaviour
     public int chunkCount = 5;
     [SerializeField]
     private GameData.ToolType currentTool;
+    private Vector3 defaultScale;
+    private float bloodSplash = 0.3f;
 
+    private void Awake()
+    {
+        this.defaultScale = this.transform.localScale;
+    }
     void Start()
     {
         this.rb2D = GetComponent<Rigidbody2D>();
         currentTool = GameData.ToolType.NONE;
+
     }
 
     // Update is called once per frame
@@ -76,13 +83,16 @@ public class Player : MonoBehaviour
         //spawn chunks,
         for(int i = 0; i<chunkCount; ++i)
         {
-            var s = Instantiate(Chunks, this.transform.position, this.transform.rotation);
-            var rb2d = s.GetComponent<Rigidbody2D>();
-            rb2d.AddForce(new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)) * thrust * Time.deltaTime * speedMultiplier);
+            this.GetComponent<Collider2D>().enabled = false;
+            var s = Instantiate(Chunks, this.transform.position+new Vector3(Random.Range(-bloodSplash, bloodSplash),
+                                                                            Random.Range(-bloodSplash, bloodSplash), 0.0f), this.transform.rotation);
+            var rb2d = s.GetComponent<Rigidbody2D>();            
+            rb2d.AddForce(new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * thrust * Time.deltaTime * speedMultiplier);
             rb2d.gravityScale = this.rb2D.gravityScale;
             rb2d.drag = this.rb2D.drag;
         }
         //remove player
+
     }
 
     void GravityOff() {
@@ -103,7 +113,7 @@ public class Player : MonoBehaviour
 
     void FlipSprite(bool IsLeft = false)
     {
-        this.transform.localScale = new Vector3((IsLeft ? -1 : 1), 1, 1);
+        this.transform.localScale = new Vector3((IsLeft ? -this.defaultScale.x : this.defaultScale.x), this.defaultScale.y, this.defaultScale.z);
     }
 
     public GameData.ToolType CurrentTool

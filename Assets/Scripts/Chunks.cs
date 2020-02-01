@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Chunks : MonoBehaviour
 {
@@ -18,8 +16,15 @@ public class Chunks : MonoBehaviour
     void OnDisable()
     {
         EventManager.StopListening(EventMessage.GravityOff, GravityOff);
-        EventManager.StartListening(EventMessage.GravityOn, GravityOn);
+        EventManager.StopListening(EventMessage.GravityOn, GravityOn);
     }
+
+    private void OnDestroy()
+    {
+        EventManager.StopListening(EventMessage.GravityOff, GravityOff);
+        EventManager.StopListening(EventMessage.GravityOn, GravityOn);
+    }
+
     void GravityOff()
     {
         this.rb2D.gravityScale = 0;
@@ -30,5 +35,10 @@ public class Chunks : MonoBehaviour
     {
         this.rb2D.gravityScale = 1;
         this.rb2D.drag = 2;
+    }
+
+    void OnCollisionStay2D(Collision2D coll)
+    {
+        Destroy(this.gameObject);
     }
 }

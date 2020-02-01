@@ -30,14 +30,17 @@ public class EventManager : MonoBehaviour {
     }
 
     public static void StartListening(string eventName, UnityAction listener) {
-        // UnityEvent thisEvent = null;
-        // if (instance.eventDictionary.TryGetValue(eventName, out thisEvent)) {
-        //     thisEvent.AddListener(listener);
-        // } else {
-        //     thisEvent = new UnityEvent();
-        //     thisEvent.AddListener(listener);
-        //     instance.eventDictionary.Add(eventName, thisEvent);
-        // }
+        UnityEvent thisEvent = null;
+        if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
+        {
+            thisEvent.AddListener(listener);
+        }
+        else
+        {
+            thisEvent = new UnityEvent();
+            thisEvent.AddListener(listener);
+            instance.eventDictionary.Add(eventName, thisEvent);
+        }
     }
 
     public static void StopListening(string eventName, UnityAction listener) {
