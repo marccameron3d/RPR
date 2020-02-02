@@ -70,10 +70,13 @@ public class RepairPoint : MonoBehaviour
     {
         if (other.gameObject.tag.Contains("Player"))
         {
-            if(other.gameObject.GetComponent<Player>().CurrentTool == neededToolType)
+            if (other.gameObject.GetComponent<Player>().CurrentTool != null)
             {
-                Debug.Log("StartListening");
-                EventManager.StartListening(string.Format("Player{0}{1}", (int)other.gameObject.GetComponent<Player>().PlayerNum, neededToolType),Repair);
+                if (other.gameObject.GetComponent<Player>().CurrentTool.myType == neededToolType)
+                {
+                    Debug.Log("StartListening");
+                    EventManager.StartListening(string.Format("Player{0}{1}", (int)other.gameObject.GetComponent<Player>().PlayerNum, neededToolType), Repair);
+                }
             }
         }
     }

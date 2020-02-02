@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Tool : MonoBehaviour
 {
-    [SerializeField]
-    GameData.ToolType myType;
+    public GameData.ToolType myType;
     Collider2D col;
+    [SerializeField]
     Player owner;
 
     void Start()
@@ -19,11 +19,14 @@ public class Tool : MonoBehaviour
         if (collision.gameObject.tag.Contains("Player"))
         {
             Debug.Log("Touched tool");
-            if (collision.gameObject.GetComponent<Player>().CurrentTool == GameData.ToolType.NONE)
+            if (collision.gameObject.GetComponent<Player>().CurrentTool == null)
             {
+                Debug.Log("Gets here 1");
                 this.gameObject.transform.SetParent(collision.gameObject.transform);
+                Debug.Log("Gets here 2");
                 owner = collision.gameObject.GetComponent<Player>();
-                owner.CurrentTool = myType;
+                owner.CurrentTool = this;
+                Debug.Log("Gets here 3");
                 PickedUp();
                 col.enabled = false;
             }
@@ -34,15 +37,12 @@ public class Tool : MonoBehaviour
     {
         if (this.gameObject.transform.parent != null)
         {
-            if(!GameData.gravityIsWorking)
-            {
-                this.gameObject.GetComponent<Rigidbody2D>().velocity =
-                    this.gameObject.transform.parent.gameObject.GetComponent<Rigidbody2D>().velocity;
-            }
+            this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             this.gameObject.transform.SetParent(null);
-            owner.CurrentTool = GameData.ToolType.NONE;
+            owner.CurrentTool = null;
             owner = null;
-            col.enabled = true;
+
+            Invoke("ColliderTimer", 0.5f);
         }
     }
 
@@ -55,10 +55,12 @@ public class Tool : MonoBehaviour
         this.gameObject.transform.parent = owner.gameObject.transform.Find("ToolAnchor");
         this.gameObject.transform.localPosition = Vector3.zero;
         this.gameObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        //Add some code that will set the local position to the players tool anchor
-        //Add some code that will rotate to the correct player local tool rotation anchor
-        //Add some code that will set the players tool type;
     }
 
+    void ColliderTimer()
+    {
+        col.enabled = true;
+        this.gameObject.GetComponent<Rigidbody2D>().simulated = true;
+    }
 
 }

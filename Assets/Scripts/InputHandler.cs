@@ -28,17 +28,29 @@ public class InputHandler : MonoBehaviour {
     private void FixedUpdate () {
         float xInput = 0;
         float yInput = 0;
-        if (player.PlayerNum != GameData.PlayerNumber.NULL) {
-            xInput = Input.GetAxis (string.Format ("Horizontal{0}", (int) player.PlayerNum));
-            yInput = Input.GetAxis (string.Format ("Vertical{0}", (int) player.PlayerNum));
-            player.TakeInput (xInput, yInput);
-            CalculateGesture ();
+        if (player != null)
+        {
+            if (player.PlayerNum != GameData.PlayerNumber.NULL)
+            {
+                xInput = Input.GetAxis(string.Format("Horizontal{0}", (int)player.PlayerNum));
+                yInput = Input.GetAxis(string.Format("Vertical{0}", (int)player.PlayerNum));
+                player.TakeInput(xInput, yInput);
+
+                if (player.CurrentTool != null)
+                {
+                    CalculateGesture();
+                    if (Input.GetKeyDown(KeyCode.Y))
+                    {
+                        player.CurrentTool.DropTool();
+                    }
+                }
+            }
         }
     }
 
     void CalculateGesture()
     {
-        switch (player.CurrentTool)
+       /* switch (player.CurrentTool.myType)
         {
             case GameData.ToolType.HAMMER:; break;
                
@@ -49,16 +61,17 @@ public class InputHandler : MonoBehaviour {
             case GameData.ToolType.SCREWDRIVER:; break;
 
             case GameData.ToolType.WRENCH:; break;
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.T))
         {
+            Debug.Log("Doing gesture");
             completeGesture = true;
         }
 
         if (completeGesture)
         {
-            EventManager.TriggerEvent(string.Format("Player{0}{1}", (int)player.PlayerNum, player.CurrentTool));
+            EventManager.TriggerEvent(string.Format("Player{0}{1}", (int)player.PlayerNum, player.CurrentTool.myType));
             completeGesture = false;
         }
     

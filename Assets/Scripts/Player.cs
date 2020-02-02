@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
     public GameObject Chunks;
     public int chunkCount = 2;
     [SerializeField]
-    private GameData.ToolType currentTool = GameData.ToolType.NONE;
+    Tool currentTool;
     private Vector3 defaultScale;
     private float bloodSplash = 0.3f;
 
@@ -24,7 +24,7 @@ public class Player : MonoBehaviour {
     }
     void Start() {
         this.rb2D = GetComponent<Rigidbody2D>();
-        currentTool = GameData.ToolType.NONE;
+        currentTool = null;
         setAlive(true);
     }
 
@@ -100,7 +100,10 @@ public class Player : MonoBehaviour {
         //explode player
         var count = transform.GetChildCount();
         for (int i = 0; i < count; ++i) {
-            Explode(transform.GetChild(0).gameObject);
+            if (transform.GetChild(0).gameObject.GetComponent<Rigidbody2D>() != null)
+            {
+                Explode(transform.GetChild(0).gameObject);
+            }
         }
         //spawn chunks,
         for (int i = 0; i < chunkCount; ++i) {
@@ -148,7 +151,7 @@ public class Player : MonoBehaviour {
         this.transform.localScale = new Vector3((IsLeft ? -this.defaultScale.x : this.defaultScale.x), this.defaultScale.y, this.defaultScale.z);
     }
 
-    public GameData.ToolType CurrentTool {
+    public Tool CurrentTool {
         get {
             return currentTool;
         }
