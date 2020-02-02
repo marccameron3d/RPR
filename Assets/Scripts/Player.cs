@@ -93,6 +93,12 @@ public class Player : MonoBehaviour {
         EventManager.TriggerEvent(EventMessage.CameraShake);
     }
 
+    public void dropTool()  {
+        if(currentTool != null) {
+            currentTool.DropTool();
+        }
+    }
+
     public void Die() {
         //remove player collision
         this.GetComponent<Collider2D>().enabled = false;
@@ -112,6 +118,7 @@ public class Player : MonoBehaviour {
         }
         setAlive(false);
         EventManager.TriggerEvent(EventMessage.Death);
+        dropTool();
     }
 
     void setAlive(bool isAlive) {

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3067252276056658712}
   - component: {fileID: 5551855764251878323}
   - component: {fileID: 421697266}
+  - component: {fileID: 7807837816054006955}
   m_Layer: 0
   m_Name: CloneBay
   m_TagString: CloneBay
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2375928395059432358}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.442269, y: -0.15317869, z: 0}
-  m_LocalScale: {x: 5.4063, y: 5.4063, z: 5.4063}
+  m_LocalScale: {x: 2.68, y: 3.56, z: 5.4063}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -94,3 +95,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 065a2eecba887544d8b02bff7f03f127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &7807837816054006955
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2375928395059432358}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.14
