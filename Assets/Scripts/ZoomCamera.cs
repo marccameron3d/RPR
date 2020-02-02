@@ -8,17 +8,35 @@ public class ZoomCamera : MonoBehaviour
     List<Transform> players;
     float minZoom = 3.0f, maxZoom = 7.5f, currentZoom, prevZoom;
 
+    public float shakeTime = 3f;
+    private float shakeDuration = 0f;
+    public float shakeAmount = 0.7f;
+    private float decreaseFactor = 1.0f;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        if (players.Count == 0)
+        {
+            Debug.LogError($"No players added to the players list on ZoomCamera {this.gameObject.name}");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         Camera.main.orthographicSize = CalculateZoom();
-        Camera.main.gameObject.transform.position = CalculatePosition();
+
+        if (shakeDuration > 0)
+        {
+            transform.localPosition = CalculatePosition() + Random.insideUnitSphere * shakeAmount;
+            shakeDuration -= Time.deltaTime * decreaseFactor;
+        }
+        else
+        {
+            shakeDuration = 0f;
+            Camera.main.gameObject.transform.position = CalculatePosition();
+        }
     }
 
     float CalculateZoom()
@@ -72,6 +90,22 @@ public class ZoomCamera : MonoBehaviour
 
         return currentZoom;
     }
+
+    void OnEnable()
+    {
+        EventManager.StartListening(EventMessage.CameraShake, CameraShake);
+    }
+
+    void OnDisable()
+    {
+        EventManager.StopListening(EventMessage.CameraShake, CameraShake);
+    }
+
+    private void CameraShake()
+    {
+        shakeDuration = shakeTime;
+    }
+
 
     Vector3 CalculatePosition()
     {
