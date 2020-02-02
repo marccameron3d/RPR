@@ -50,25 +50,29 @@ public class InputHandler : MonoBehaviour {
 
     void CalculateGesture()
     {
-       /* switch (player.CurrentTool.myType)
+        switch (player.CurrentTool.myType)
         {
-            case GameData.ToolType.HAMMER:; break;
+            case GameData.ToolType.HAMMER:
+                InputHammer();
+                break;
                
-            case GameData.ToolType.DRILL:; break;
+            case GameData.ToolType.DRILL:
+                InputDrill();
+                break;
 
-            case GameData.ToolType.SAW:; break;
+            case GameData.ToolType.SAW:
+                InputSaw();
+                break;
 
-            case GameData.ToolType.SCREWDRIVER:; break;
+            case GameData.ToolType.SCREWDRIVER:
+                InputScrewdriver();
+                break;
 
-            case GameData.ToolType.WRENCH:; break;
-        }*/
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Debug.Log("Doing gesture");
-            completeGesture = true;
+            case GameData.ToolType.WRENCH:
+                InputWrench();
+                break;
         }
-
+               
         if (completeGesture)
         {
             EventManager.TriggerEvent(string.Format("Player{0}{1}", (int)player.PlayerNum, player.CurrentTool.myType));
@@ -93,5 +97,47 @@ public class InputHandler : MonoBehaviour {
 
     }
 
-   
+    private void InputScrewdriver()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("Input screwdriver controls");
+            completeGesture = true;
+        }        
+    }
+
+    private void InputHammer()
+    {        
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Debug.Log("Input hammer controls");
+            completeGesture = true;
+        }
+    }
+
+    private void InputSaw()
+    {       
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log("Input saw controls");
+            completeGesture = true;
+        }
+    }
+
+    private void InputDrill()
+    {        
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Debug.Log("Input drill controls");
+            completeGesture = true;
+        }
+    }
+    private void InputWrench()
+    {        
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Debug.Log("Input wrench controls");
+            completeGesture = true;
+        }
+    }
 }
