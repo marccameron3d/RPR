@@ -86,8 +86,6 @@ public class ZoomCamera : MonoBehaviour
             currentZoom = minZoom;
         }
 
-        Mathf.Lerp(prevZoom, currentZoom, Time.deltaTime);
-
         return currentZoom;
     }
 
