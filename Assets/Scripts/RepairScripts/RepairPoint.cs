@@ -26,17 +26,21 @@ public class RepairPoint : MonoBehaviour
     [SerializeField]
     protected float health = 1;
     protected State currentState = State.NORMAL;
-    
+    protected bool inputDisplay;
+
+    //private Player player;
+
     [SerializeField]
     Image radialTimer;
     [SerializeField]
     Image outLine;
     [SerializeField]
     Text toolMessage;
-    
+
     protected virtual void SetUp()
     {
         playerTrigger = this.gameObject.GetComponent<BoxCollider2D>();
+        //player = GetComponent<Player>();
     }
 
     void Update()
@@ -65,7 +69,7 @@ public class RepairPoint : MonoBehaviour
     {
         health = Mathf.Clamp(health - damageRate, 0, 1);
 
-        if(health == 0)
+        if (health == 0)
         {
             BecomeDestroyed();
         }
@@ -81,10 +85,14 @@ public class RepairPoint : MonoBehaviour
                 {
                     Debug.Log("StartListening");
                     EventManager.StartListening(string.Format("Player{0}{1}", (int)other.gameObject.GetComponent<Player>().PlayerNum, neededToolType), Repair);
+
+                    inputDisplay = true;
+                    DisplayGesture(other);
                 }
                 else
                 {
-                    Debug.Log("Wrong tool, need " + neededToolType);
+                    Debug.Log("Wrong Tool, you need the " + neededToolType);
+                    toolMessage.text = "Wrong Tool!\n " + neededToolType.ToString() + " Needed";                    
                 }
             }
         }
@@ -95,8 +103,17 @@ public class RepairPoint : MonoBehaviour
         if (other.gameObject.tag.Contains("Player"))
         {
             Debug.Log("StopListening");
-            toolMessage.text = neededToolType.ToString() + " Needed";
+
             EventManager.StopListening(string.Format("Player{0}{1}", (int)other.gameObject.GetComponent<Player>().PlayerNum, neededToolType), Repair);
+        }
+
+        if (other.gameObject.GetComponent<Player>().CurrentTool != null)
+        {
+            if (other.gameObject.GetComponent<Player>().CurrentTool.myType == neededToolType)
+            {
+                inputDisplay = false;
+                DisplayGesture(other);
+            }
         }
     }
 
@@ -186,15 +203,15 @@ public class RepairPoint : MonoBehaviour
             GameData.shipSpeed = 1;
         }
     }
-    
+
     private void GravityBroken()
     {
-        GameData.gravityIsWorking = isBroken;        
+        GameData.gravityIsWorking = isBroken;
     }
 
     private void RingBroken()
     {
-        if(isBroken)
+        if (isBroken)
         {
             GameData.rotationSpeed = 0;
         }
@@ -207,5 +224,41 @@ public class RepairPoint : MonoBehaviour
     private void CameraBroken()
     {
         //Switch room labels and UI info off on minimap
+        Debug.Log("Camera's bbroke bro!");
+    }
+
+    private void DisplayGesture(Collider2D collider)
+    {
+        var currentTool = collider.GetComponent<Player>().currentTool;
+
+        if (inputDisplay)
+        {
+            switch (currentTool.myType)
+            {
+                case GameData.ToolType.HAMMER:
+                    toolMessage.text = "Tap the " + "A Button";
+                    break;
+
+                case GameData.ToolType.DRILL:
+                    toolMessage.text = "Hold the " + "R Trigger";
+                    break;
+
+                case GameData.ToolType.SAW:
+                    toolMessage.text = "Tap the " + "X Button";
+                    break;
+
+                case GameData.ToolType.SCREWDRIVER:
+                    toolMessage.text = "Tap the " + "Y Button";
+                    break;
+
+                case GameData.ToolType.WRENCH:
+                    toolMessage.text = "Tap the " + "B Button"; ;
+                    break;
+            }
+        }   
+        else
+        {
+            Debug.Log("Input unavaliable");
+        }
     }
 }

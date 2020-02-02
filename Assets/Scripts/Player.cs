@@ -10,8 +10,8 @@ public class Player : MonoBehaviour {
     private Rigidbody2D rb2D;
     public GameObject Chunks;
     public int chunkCount = 2;
-    [SerializeField]
-    Tool currentTool;
+    //[SerializeField]
+    public Tool currentTool;
     private Vector3 defaultScale;
     private float bloodSplash = 0.3f;
 
@@ -91,7 +91,6 @@ public class Player : MonoBehaviour {
         part.GetComponent<Collider2D>().enabled = true;
 
         EventManager.TriggerEvent(EventMessage.CameraShake);
-
     }
 
     public void Die() {
