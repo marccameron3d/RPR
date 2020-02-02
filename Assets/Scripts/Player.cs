@@ -98,7 +98,7 @@ public class Player : MonoBehaviour {
         //remove player collision
         this.GetComponent<Collider2D>().enabled = false;
         //explode player
-        var count = transform.GetChildCount();
+        var count = transform.childCount;
         for (int i = 0; i < count; ++i) {
             if (transform.GetChild(0).gameObject.GetComponent<Rigidbody2D>() != null)
             {

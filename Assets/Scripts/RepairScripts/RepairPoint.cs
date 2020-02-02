@@ -23,12 +23,14 @@ public class RepairPoint : MonoBehaviour
     [SerializeField]
     protected float health = 1;
     protected State currentState = State.NORMAL;
+    
     [SerializeField]
     Image radialTimer;
     [SerializeField]
     Image outLine;
-
-
+    [SerializeField]
+    Text toolMessage;
+    
     protected virtual void SetUp()
     {
         playerTrigger = this.gameObject.GetComponent<BoxCollider2D>();
@@ -77,6 +79,10 @@ public class RepairPoint : MonoBehaviour
                     Debug.Log("StartListening");
                     EventManager.StartListening(string.Format("Player{0}{1}", (int)other.gameObject.GetComponent<Player>().PlayerNum, neededToolType), Repair);
                 }
+                else
+                {
+                    Debug.Log("Wrong tool, need " + neededToolType);
+                }
             }
         }
     }
@@ -86,6 +92,7 @@ public class RepairPoint : MonoBehaviour
         if (other.gameObject.tag.Contains("Player"))
         {
             Debug.Log("StopListening");
+            toolMessage.text = neededToolType.ToString() + " Needed";
             EventManager.StopListening(string.Format("Player{0}{1}", (int)other.gameObject.GetComponent<Player>().PlayerNum, neededToolType), Repair);
         }
     }
