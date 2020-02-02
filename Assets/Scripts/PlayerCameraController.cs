@@ -34,13 +34,11 @@ public class PlayerCameraController : MonoBehaviour {
     void OnEnable() {
         EventManager.StartListening(EventMessage.ResetCamera, ResetCamera);
         EventManager.StartListening(EventMessage.CameraShake, CameraShake);
-
     }
 
     void OnDisable() {
         EventManager.StopListening(EventMessage.ResetCamera, ResetCamera);
         EventManager.StopListening(EventMessage.CameraShake, CameraShake);
-
     }
 
     private void CameraShake() {
