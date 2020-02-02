@@ -41,8 +41,8 @@ public class Chunks : MonoBehaviour
     {
         if(coll.gameObject.tag.Contains("Player"))
         { 
-            Destroy(this.gameObject);
-            Debug.Log("BLOODED");
+            Destroy(this.gameObject);            
+            EventManager.TriggerEvent(EventMessage.Blooded);
 
         }
         if(coll.gameObject.name.Contains("Chunk"))

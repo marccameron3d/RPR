@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
     public static GameObject ChunkManager;
     public static GameObject CloneBay;
+    public static SpriteRenderer CameraBloodOverlay;
 
     float shipProgress = 0.0f;
     float shipGoalDistance = 100.0f;
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour
         CloneBay = GameObject.FindGameObjectWithTag("CloneBay");
         if (Player == null)
             Debug.LogError("You need to add the player prefab to the Game Manager Inspector bro");
-
+        CameraBloodOverlay = Camera.main.GetComponentInChildren<SpriteRenderer>();
 
         repairEvents = new Queue<RepairEvent>();
 
