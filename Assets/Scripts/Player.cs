@@ -33,17 +33,6 @@ public class Player : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Z)) {
             Die();
         }
-        if (Input.GetKeyDown(KeyCode.X)) {
-            EventManager.TriggerEvent(EventMessage.GravityOn);
-        }
-        if (Input.GetKeyDown(KeyCode.C)) {
-            EventManager.TriggerEvent(EventMessage.GravityOff);
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            Debug.Log("blooded");
-            EventManager.TriggerEvent(EventMessage.Blooded);
-        }
     }
 
     public void TakeInput(float x, float y) {
