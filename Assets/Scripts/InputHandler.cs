@@ -52,6 +52,9 @@ public class InputHandler : MonoBehaviour {
             if (Input.GetButtonDown (string.Format ("ButtonA{0}", (int) player.PlayerNum))) {
                 onAPressed ();
             }
+             if (Input.GetButtonDown (string.Format ("ButtonB{0}", (int) player.PlayerNum))) {
+                onBPressed ();
+            }
         }
     }
 
@@ -94,6 +97,7 @@ public class InputHandler : MonoBehaviour {
 
     void onBPressed () {
         Debug.Log ("B pressed " + player.PlayerNum);
+        player.dropTool();
     }
 
     private void InputScrewdriver()

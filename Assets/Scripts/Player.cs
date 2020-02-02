@@ -93,7 +93,7 @@ public class Player : MonoBehaviour {
         EventManager.TriggerEvent(EventMessage.CameraShake);
     }
 
-    private void dropTool()  {
+    public void dropTool()  {
         if(currentTool != null) {
             currentTool.DropTool();
         }
