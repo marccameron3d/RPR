@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using XboxCtrlrInput;
 
 public class InputHandler : MonoBehaviour {
 
@@ -48,6 +47,14 @@ public class InputHandler : MonoBehaviour {
         }
     }
 
+     private void Update () {
+        if (player.PlayerNum != GameData.PlayerNumber.NULL) {
+            if (Input.GetButtonDown (string.Format ("ButtonA{0}", (int) player.PlayerNum))) {
+                onAPressed ();
+            }
+        }
+    }
+
     void CalculateGesture()
     {
         switch (player.CurrentTool.myType)
@@ -80,21 +87,13 @@ public class InputHandler : MonoBehaviour {
         }
     
     }
-            
-    private void Update () {
-        if (player.PlayerNum != GameData.PlayerNumber.NULL) {
-            if (Input.GetButtonDown (string.Format ("ButtonA{0}", (int) player.PlayerNum))) {
-                onAPressed ();
-            }
-        }
-    }
 
     void onAPressed () {
         Debug.Log ("A pressed " + player.PlayerNum);
     }
 
     void onBPressed () {
-
+        Debug.Log ("B pressed " + player.PlayerNum);
     }
 
     private void InputScrewdriver()
