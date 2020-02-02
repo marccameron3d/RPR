@@ -20,6 +20,10 @@ public class RepairPoint : MonoBehaviour
     protected GameData.ToolType neededToolType;
     [SerializeField]
     protected GameData.RoomType setRoomType;
+    [SerializeField]
+    Sprite normalSprite;
+    [SerializeField]
+    Sprite DestroyedSprite;
     protected bool isBroken = false;
     protected float repairRate = 0.1f;
     protected float damageRate = 0.002f;
@@ -124,7 +128,7 @@ public class RepairPoint : MonoBehaviour
             radialTimer.enabled = true;
             outLine.enabled = true;
             currentState = State.DAMAGED;
-            this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            this.gameObject.GetComponent<SpriteRenderer>().sprite = DestroyedSprite;
             EventManager.TriggerEvent(string.Format("{0}Damaged", this.gameObject.name));
             return true;
         }
@@ -161,9 +165,8 @@ public class RepairPoint : MonoBehaviour
     void BecomeNormal()
     {
         radialTimer.enabled = false;
-        outLine.enabled = false;
         currentState = State.NORMAL;
-        this.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = normalSprite;
         EventManager.TriggerEvent(string.Format("{0}Repaired", this.gameObject.name));
 
         isBroken = false;

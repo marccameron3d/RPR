@@ -41,45 +41,12 @@ public class ZoomCamera : MonoBehaviour
 
     float CalculateZoom()
     {
-        Vector3 minPos = Vector3.zero; 
-        Vector3 maxPos = Vector3.zero;
-        int x = 0;
-
-        for (int i = 0; i < players.Count; i++)
-        {
-            if (players[i] != null)
-            {
-                if(players[i].transform.position.x <= minPos.x)
-                {
-                    minPos.x = players[i].transform.position.x;
-                }
-
-                if (players[i].transform.position.x >= maxPos.x)
-                {
-                    maxPos.x = players[i].transform.position.x;
-                }
-
-                if (players[i].transform.position.x <= minPos.y)
-                {
-                    minPos.y = players[i].transform.position.y;
-                }
-
-                if (players[i].transform.position.x >= maxPos.y)
-                {
-                    maxPos.y = players[i].transform.position.y;
-                }
-
-                x++;
-            }
-        }
-
-
         prevZoom = currentZoom;
 
 
-        if (x > 1)
+        if (players.Count > 1)
         {
-            currentZoom = Mathf.Clamp(Vector3.Distance(minPos, maxPos), minZoom, maxZoom);
+            currentZoom = Mathf.Clamp(Vector3.Distance(players[0].position, players[1].position), minZoom, maxZoom);
         }
         else
         {
@@ -126,12 +93,12 @@ public class ZoomCamera : MonoBehaviour
         return cachedPos;
     }
 
-    void RegisterPlayer(Transform _playerToAdd)
+    public void RegisterPlayer(Transform _playerToAdd)
     {
         players.Add(_playerToAdd);
     }
 
-    void DeregisterPlayer(Transform _playerToRemove)
+    public void DeregisterPlayer(Transform _playerToRemove)
     {
         players.Remove(_playerToRemove);
     }

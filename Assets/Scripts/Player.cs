@@ -21,6 +21,7 @@ public class Player : MonoBehaviour {
 
     private void Awake() {
         this.defaultScale = this.transform.localScale;
+        Camera.main.GetComponent<ZoomCamera>().RegisterPlayer(this.gameObject.transform);
     }
     void Start() {
         this.rb2D = GetComponent<Rigidbody2D>();
@@ -119,6 +120,7 @@ public class Player : MonoBehaviour {
         setAlive(false);
         EventManager.TriggerEvent(EventMessage.Death);
         dropTool();
+        Camera.main.GetComponent<ZoomCamera>().DeregisterPlayer(this.gameObject.transform);
     }
 
     void setAlive(bool isAlive) {
