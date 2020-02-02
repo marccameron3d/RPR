@@ -62,5 +62,4 @@ public class Tool : MonoBehaviour
         col.enabled = true;
         this.gameObject.GetComponent<Rigidbody2D>().simulated = true;
     }
-
 }
