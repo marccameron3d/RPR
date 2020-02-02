@@ -18,6 +18,9 @@ public class RepairPoint : MonoBehaviour
     bool hasCorrectTool = false;
     [SerializeField]
     protected GameData.ToolType neededToolType;
+    [SerializeField]
+    protected GameData.RoomType setRoomType;
+    protected bool isBroken = false;
     protected float repairRate = 0.1f;
     protected float damageRate = 0.002f;
     [SerializeField]
@@ -121,6 +124,10 @@ public class RepairPoint : MonoBehaviour
             currentState = State.DESTROYED;
             this.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
             GameData.shipHealth -= GameData.repairPointValue / 4.0f;
+
+            isBroken = true;
+            UpdateRoomBreak();
+
             return true;
         }
         else
@@ -141,5 +148,64 @@ public class RepairPoint : MonoBehaviour
         currentState = State.NORMAL;
         this.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
         EventManager.TriggerEvent(string.Format("{0}Repaired", this.gameObject.name));
+
+        isBroken = false;
+        UpdateRoomBreak();
+    }
+
+    private void UpdateRoomBreak()
+    {
+        Debug.Log(setRoomType + " break is " + isBroken);
+        isBroken = !isBroken;
+
+        switch (setRoomType)
+        {
+            case GameData.RoomType.Thruster:
+                ThrusterBroken();
+                break;
+            case GameData.RoomType.Gravity:
+                GravityBroken();
+                break;
+            case GameData.RoomType.Ring:
+                RingBroken();
+                break;
+            case GameData.RoomType.Camera:
+                CameraBroken();
+                break;
+        }
+    }
+
+    private void ThrusterBroken()
+    {
+        if (isBroken)
+        {
+            GameData.shipSpeed = 0;
+        }
+        else
+        {
+            GameData.shipSpeed = 1;
+        }
+    }
+    
+    private void GravityBroken()
+    {
+        GameData.gravityIsWorking = isBroken;        
+    }
+
+    private void RingBroken()
+    {
+        if(isBroken)
+        {
+            GameData.rotationSpeed = 0;
+        }
+        else
+        {
+            GameData.rotationSpeed = 0.5f;
+        }
+    }
+
+    private void CameraBroken()
+    {
+        //Switch room labels and UI info off on minimap
     }
 }

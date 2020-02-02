@@ -9,6 +9,7 @@
     public static bool player3Alive = true;
     public static float shipSpeed = 1.0f;
     public static float shipSpeedModifier = 1.0f;
+    public static float rotationSpeed = 0f;
 
     public enum ToolType {
         SCREWDRIVER,
@@ -17,6 +18,14 @@
         DRILL,
         WRENCH,
         NONE
+    }
+
+    public enum RoomType
+    {
+        Thruster,
+        Gravity,
+        Ring,
+        Camera
     }
 
     public enum PlayerNumber {
