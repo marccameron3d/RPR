@@ -94,13 +94,13 @@ public class ZoomCamera : MonoBehaviour
         return cachedPos;
     }
 
-    void RegisterPlayer()
+    void RegisterPlayer(Transform _playerToAdd)
     {
-
+        players.Add(_playerToAdd);
     }
 
-    void DeregisterPlayer()
+    void DeregisterPlayer(Transform _playerToRemove)
     {
-
+        players.Remove(_playerToRemove);
     }
 }
