@@ -594,6 +594,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 482240436998261092, guid: 0308d87ae76134445810ad2a36d83a54,
+        type: 3}
+      propertyPath: rotationSpeed
+      value: -0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 482240436998261095, guid: 0308d87ae76134445810ad2a36d83a54,
         type: 3}
       propertyPath: m_Name
@@ -931,6 +936,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4772573785074483221, guid: 05a89f709f7114057a972e72c45a8419,
+        type: 3}
+      propertyPath: rotationSpeed
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 4772573785223143920, guid: 05a89f709f7114057a972e72c45a8419,
         type: 3}

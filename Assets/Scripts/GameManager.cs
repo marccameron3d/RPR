@@ -47,11 +47,16 @@ public class GameManager : MonoBehaviour
 
 
         repairEvents = new Queue<RepairEvent>();
-        RepairEvent newEvent = new RepairEvent();
-        newEvent.numberToBreak = 0;
-        newEvent.distanceToBreakAt = 10.0f;
 
-        repairEvents.Enqueue(newEvent);
+        RepairEvent cahcedEvent = new RepairEvent();
+        for (int i = 0; i < repairPoints.Count; i++)
+        { 
+            cahcedEvent.numberToBreak = i;
+            cahcedEvent.distanceToBreakAt = 10.0f * i;
+            repairEvents.Enqueue(cahcedEvent);
+        }
+
+        GameData.repairPointValue = 1.0f / repairPoints.Count;
     }
 
     //Update is called every frame.

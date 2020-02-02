@@ -113,7 +113,7 @@ public class RepairPoint : MonoBehaviour
         {
             currentState = State.DESTROYED;
             this.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
-            GameData.shipHealth -= GameData.repairPointValue / 2.0f;
+            GameData.shipHealth -= GameData.repairPointValue / 4.0f;
             return true;
         }
         else
