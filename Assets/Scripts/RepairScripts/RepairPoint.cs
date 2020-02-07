@@ -216,11 +216,11 @@ public class RepairPoint : MonoBehaviour
     {
         if (isBroken)
         {
-            GameData.rotationSpeed = 0;
+            GameData.rotationSpeed = 0.3f;
         }
         else
         {
-            GameData.rotationSpeed = 0.5f;
+            GameData.rotationSpeed = 0.6f;
         }
     }
 
